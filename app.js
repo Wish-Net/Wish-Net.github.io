@@ -18,13 +18,24 @@ const wishlistEl = document.getElementById("wishlist");
 
 // ---- Signup ----
 signupBtn.onclick = async () => {
-  let { error } = await supabase.auth.signUp({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  console.log("Signing up with:", email, password); // debug
+
+  let { error, data } = await supabase.auth.signUp({
+    email: email,
+    password: password
   });
 
-  authMessage.textContent = error ? error.message : "Signup successful!";
+  if (error) {
+    console.error("Sign up error:", error);
+    authMessage.textContent = error.message;
+  } else {
+    console.log("Sign up success:", data);
+    authMessage.textContent = "Signup successful! Please check your email to confirm.";
+  }
 };
+
 
 // ---- Login ----
 loginBtn.onclick = async () => {
