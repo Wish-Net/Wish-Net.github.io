@@ -1,7 +1,7 @@
 // ---- Supabase connection ----
 const supabaseUrl = "https://nppwibcwohfzvxxvtnzb.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 // DOM elements
 const authSection = document.getElementById("auth-section");
@@ -16,35 +16,53 @@ const authMessage = document.getElementById("authMessage");
 const addItemBtn = document.getElementById("addItemBtn");
 const wishlistEl = document.getElementById("wishlist");
 
+// Utility: show message
+function showMessage(msg, isError = false) {
+  authMessage.textContent = msg;
+  authMessage.style.color = isError ? "red" : "green";
+}
+
 // ---- Signup ----
 signupBtn.onclick = async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  console.log("Signing up with:", email, password); // debug
 
-  let { error, data } = await supabase.auth.signUp({
-    email: email,
-    password: password
+  console.log("Signup attempt:", email);
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password
   });
 
   if (error) {
-    console.error("Sign up error:", error);
-    authMessage.textContent = error.message;
-  } else {
-    console.log("Sign up success:", data);
-    authMessage.textContent = "Signup successful! Please check your email to confirm.";
+    console.error("Signup error:", error);
+    showMessage(error.message, true);
+    return;
   }
-};
 
+  console.log("Signup success:", data);
+  showMessage("Signup successful! Check your email to confirm your account.");
+};
 
 // ---- Login ----
 loginBtn.onclick = async () => {
-  let { data, error } = await supabase.auth.signInWithPassword({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  console.log("Login attempt:", email);
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
   });
 
-  if (error) return authMessage.textContent = error.message;
+  if (error) {
+    console.error("Login error:", error);
+    showMessage(error.message, true);
+    return;
+  }
+
+  console.log("Login success:", data);
 
   authSection.classList.add("hidden");
   appSection.classList.remove("hidden");
@@ -54,26 +72,37 @@ loginBtn.onclick = async () => {
 
 // ---- Logout ----
 logoutBtn.onclick = async () => {
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   appSection.classList.add("hidden");
   authSection.classList.remove("hidden");
+  showMessage("");
 };
 
 // ---- Load wishlist ----
 async function loadWishlist() {
   wishlistEl.innerHTML = "";
 
-  let { data: user } = await supabase.auth.getUser();
-  if (!user.user) return;
+  const { data: userData } = await supabaseClient.auth.getUser();
+  const user = userData?.user;
+  if (!user) {
+    console.warn("No logged-in user found");
+    return;
+  }
 
-  // Fetch user's wishlist
-  let { data: items } = await supabase
+  console.log("Loading wishlist for user:", user.id);
+
+  const { data: items, error } = await supabaseClient
     .from("wishlist_items")
     .select("*")
-    .eq("user_id", user.user.id);
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Error loading wishlist:", error);
+    return;
+  }
 
   items.forEach(item => {
-    let li = document.createElement("li");
+    const li = document.createElement("li");
     li.innerHTML = `
       <strong>${item.name}</strong><br>
       <a href="${item.url}" target="_blank">${item.url}</a><br>
@@ -81,19 +110,24 @@ async function loadWishlist() {
     `;
     wishlistEl.appendChild(li);
   });
+
+  console.log("Wishlist loaded:", items);
 }
 
 // ---- Add item ----
 addItemBtn.onclick = async () => {
-  let { data: user } = await supabase.auth.getUser();
-  if (!user.user) return;
+  const { data: userData } = await supabaseClient.auth.getUser();
+  const user = userData?.user;
+  if (!user) return;
 
-  let name = document.getElementById("itemName").value;
-  let url = document.getElementById("itemUrl").value;
-  let notes = document.getElementById("itemNotes").value;
+  const name = document.getElementById("itemName").value;
+  const url = document.getElementById("itemUrl").value;
+  const notes = document.getElementById("itemNotes").value;
 
-  await supabase.from("wishlist_items").insert({
-    user_id: user.user.id,
+  console.log("Adding item:", { name, url, notes });
+
+  await supabaseClient.from("wishlist_items").insert({
+    user_id: user.id,
     name,
     url,
     notes
