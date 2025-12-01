@@ -26,25 +26,25 @@ function showMessage(text, error = false) {
 // SIGN UP
 // --------------------------------------------------------------
 signupBtn.onclick = async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+    const email = signupEmail.value;
+    const password = signupPassword.value;
 
-  console.log("🔵 Signup attempt:", email);
+    console.log("Signup attempt:", email);
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password
-  });
+    const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+    });
 
-  if (error) {
-    console.error("❌ Signup error:", error);
-    showMessage(error.message, true);
-    return;
-  }
-
-  console.log("✅ Signup success:", data);
-  showMessage("Signup successful! Check your email to confirm.");
+    if (error) {
+        console.error("Signup error:", error.message);
+        alert("Error: " + error.message);
+    } else {
+        console.log("Signup success:", data);
+        alert("Signup successful! Please check your email to verify your account before logging in.");
+    }
 };
+
 
 // --------------------------------------------------------------
 // LOGIN
