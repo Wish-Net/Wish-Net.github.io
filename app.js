@@ -49,7 +49,7 @@ signupBtn.onclick = async () => {
 loginBtn.onclick = async () => {
   console.log("Login attempt:", loginEmail.value);
 
-  const { data, error } = await supabaseClientClient.auth.signInWithPassword({
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email: loginEmail.value,
     password: loginPassword.value
   });
@@ -79,14 +79,14 @@ addItemBtn.onclick = async () => {
 
   const {
     data: { user }
-  } = await supabaseClientClient.auth.getUser();
+  } = await supabaseClient.auth.getUser();
 
   if (!user) {
     alert("You must be logged in.");
     return;
   }
 
-  const { error } = await supabaseClientClient
+  const { error } = await supabaseClient
     .from("wishlist_items")
     .insert({
       title: title,
@@ -111,7 +111,7 @@ addItemBtn.onclick = async () => {
 // DELETE ITEM
 // -----------------------
 async function deleteItem(id) {
-  const { error } = await supabaseClientClient
+  const { error } = await supabaseClient
     .from("wishlist_items")
     .delete()
     .eq("id", id);
@@ -132,14 +132,14 @@ async function deleteItem(id) {
 async function loadWishlist() {
   const {
     data: { user }
-  } = await supabaseClientClient.auth.getUser();
+  } = await supabaseClient.auth.getUser();
 
   if (!user) {
     wishlistContainer.innerHTML = "<p>Please log in.</p>";
     return;
   }
 
-  const { data, error } = await supabaseClientClient
+  const { data, error } = await supabaseClient
     .from("wishlist_items")
     .select("*")
     .eq("user_id", user.id)
