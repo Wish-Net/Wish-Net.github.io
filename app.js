@@ -1,8 +1,7 @@
 // Initialize Supabase
 const supabaseUrl = "https://nppwibcowhfzvvxvtnzb.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 // UI elements
 const signupEmail = document.getElementById("signupEmail");
 const signupPassword = document.getElementById("signupPassword");
