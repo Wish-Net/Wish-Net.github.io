@@ -1,51 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>WishNest</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WishNet — Wishlist</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Decorative header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <!-- simple festive logo -->
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#F7E8D0"></circle>
+          <path d="M12 5 L14 10 L19 10 L15 13 L16.8 18 L12 15.5 L7.2 18 L9 13 L5 10 L10 10 Z"
+                fill="#D94F3D"/>
+        </svg>
+        <span class="site-title">WishNet</span>
+      </div>
 
-    <div class="container">
-
-        <h1 class="app-title">WishNest</h1>
-
-        <!-- Auth Section -->
-        <div id="auth-section" class="card fade">
-            <h2>Welcome</h2>
-            <p class="subtitle">Log in or create your account</p>
-
-            <input type="email" id="email" placeholder="Email" class="input">
-            <input type="password" id="password" placeholder="Password" class="input">
-
-            <button id="signupBtn" class="btn primary">Sign Up</button>
-            <button id="loginBtn" class="btn secondary">Login</button>
-
-            <p id="authMessage" class="message"></p>
-        </div>
-
-        <!-- App -->
-        <div id="app-section" class="hidden fade">
-
-            <div class="bar">
-                <h2>Your Wishlist</h2>
-                <button id="logoutBtn" class="btn danger small">Logout</button>
-            </div>
-
-            <div class="card">
-                <input type="text" id="itemName" placeholder="Item name" class="input">
-                <input type="text" id="itemUrl" placeholder="Item URL (optional)" class="input">
-                <input type="text" id="itemNotes" placeholder="Notes" class="input">
-                <button id="addItemBtn" class="btn primary">Add Item</button>
-            </div>
-
-            <ul id="wishlist" class="wishlist"></ul>
-        </div>
-
+      <div class="header-right">
+        <div class="notice">Make wishlists for birthdays & holidays 🎁</div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="app.js"></script>
+    <!-- gentle snowfall -->
+    <div class="snow" aria-hidden="true"></div>
+  </header>
+
+  <main class="container">
+
+    <!-- AUTH CARD -->
+    <section id="auth-section" class="card auth-card" aria-labelledby="auth-title">
+      <div class="card-top">
+        <h1 id="auth-title" class="card-title">Welcome</h1>
+        <p class="card-sub">Sign up or log in to save and share wishlists.</p>
+      </div>
+
+      <form class="form" onsubmit="return false" aria-label="Authentication form">
+        <label class="field">
+          <input id="email" type="email" class="input" placeholder="Email" required />
+        </label>
+
+        <label class="field">
+          <input id="password" type="password" class="input" placeholder="Password" required />
+        </label>
+
+        <div class="buttons-row">
+          <button id="signupBtn" class="btn btn-primary" type="button">Create account</button>
+          <button id="loginBtn" class="btn btn-ghost" type="button">Log in</button>
+        </div>
+
+        <p id="authMessage" class="hint" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- APP CARD (hidden until login) -->
+    <section id="app-section" class="hidden">
+      <div class="bar">
+        <div>
+          <h2 class="section-title">Your Wishlist</h2>
+          <p class="subtitle">Add items friends and family can view & claim.</p>
+        </div>
+
+        <div class="bar-actions">
+          <button id="logoutBtn" class="btn btn-danger small" title="Logout">Logout</button>
+        </div>
+      </div>
+
+      <!-- add item card -->
+      <div class="card add-card">
+        <div class="add-row">
+          <label class="field small">
+            <input id="itemName" class="input" type="text" placeholder="Item name" />
+          </label>
+          <label class="field small">
+            <input id="itemUrl" class="input" type="url" placeholder="Item URL (optional)" />
+          </label>
+          <label class="field">
+            <input id="itemNotes" class="input" type="text" placeholder="Notes (optional)" />
+          </label>
+          <div class="add-actions">
+            <button id="addItemBtn" class="btn btn-primary">Add item</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- wishlist list -->
+      <ul id="wishlist" class="wishlist" aria-live="polite"></ul>
+    </section>
+
+    <footer class="footer">
+      <small>Made with ❤️ — WishNet</small>
+    </footer>
+  </main>
+
+  <!-- supabase + app -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
