@@ -11,7 +11,6 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="logo">
-        <!-- simple festive logo -->
         <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="10" fill="#F7E8D0"></circle>
           <path d="M12 5 L14 10 L19 10 L15 13 L16.8 18 L12 15.5 L7.2 18 L9 13 L5 10 L10 10 Z"
@@ -21,7 +20,9 @@
       </div>
 
       <div class="header-right">
-        <div class="notice">Make wishlists for birthdays & holidays 🎁</div>
+        <div class="notice">Make wishlists for birthdays &amp; holidays 🎁</div>
+        <!-- Theme toggle -->
+        <button id="themeToggle" class="btn btn-ghost small" aria-pressed="false">Dark</button>
       </div>
     </div>
 
@@ -61,7 +62,7 @@
       <div class="bar">
         <div>
           <h2 class="section-title">Your Wishlist</h2>
-          <p class="subtitle">Add items friends and family can view & claim.</p>
+          <p class="subtitle">Add items friends and family can view &amp; claim.</p>
         </div>
 
         <div class="bar-actions">
@@ -96,10 +97,8 @@
     </footer>
   </main>
 
-  <!--supabase stuff -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="app.js"></script>
-
-
+  <script src="app.js"></script>
 </body>
 </html>
