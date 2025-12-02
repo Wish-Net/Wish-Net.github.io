@@ -1,126 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Supabase Auth Demo</title>
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-  <style>
-    body { font-family: Arial; background: #111; color: #fff; padding: 40px; }
-    input { display:block; margin:10px 0; padding:8px; width:250px; }
-    button { padding:10px 20px; }
-    #dashboard { margin-top:30px; display:none; }
-  </style>
+    <meta charset="UTF-8">
+    <title>WishNest</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h2>Login / Sign Up</h2>
+<div class="container">
+    <h1>WishNest</h1>
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+    <div id="auth-section" class="card">
+        <h2>Login or Create Account</h2>
 
-  <button id="loginBtn">Login</button>
-  <button id="signupBtn">Sign Up</button>
+        <div class="input-group">
+            <input type="email" id="email" placeholder=" ">
+            <label for="email">Email</label>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" ">
+            <label for="password">Password</label>
+        </div>
 
-  <div id="dashboard">
-    <h3>Dashboard</h3>
-    <p id="userEmail"></p>
-    <button id="logoutBtn">Logout</button>
-  </div>
+        <button id="signupBtn" class="primary-btn">Sign Up</button>
+        <button id="loginBtn" class="primary-btn">Login</button>
 
-  <script>
-    // -------------------------------
-    // Supabase client
-    // -------------------------------
-    const supabase = supabase.createClient(
-      "https://nppwibcwohfzvxxvtnzb.supabase.co",
-      "YOUR_PUBLIC_ANON_KEY_HERE",
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
+        <p id="authMessage" class="message"></p>
+    </div>
 
-    const emailEl = document.getElementById("email");
-    const passwordEl = document.getElementById("password");
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const dashboard = document.getElementById("dashboard");
-    const userEmailText = document.getElementById("userEmail");
+    <div id="app-section" class="hidden">
+        <div class="header">
+            <h2>Your Wishlist</h2>
+            <button id="logoutBtn" class="secondary-btn">Logout</button>
+        </div>
 
-    // -----------------------------------------------------------
-    // Restore session on page load
-    // -----------------------------------------------------------
-    async function restoreSession() {
-      const { data: { session } } = await supabase.auth.getSession();
+        <div class="input-group">
+            <input type="text" id="itemName" placeholder=" ">
+            <label for="itemName">Item Name</label>
+        </div>
+        <div class="input-group">
+            <input type="text" id="itemUrl" placeholder=" ">
+            <label for="itemUrl">Item URL (optional)</label>
+        </div>
+        <div class="input-group">
+            <input type="text" id="itemNotes" placeholder=" ">
+            <label for="itemNotes">Notes</label>
+        </div>
 
-      if (!session) {
-        dashboard.style.display = "none";
-        return;
-      }
+        <button id="addItemBtn" class="primary-btn">Add Item</button>
+        <ul id="wishlist" class="wishlist-list"></ul>
+    </div>
+</div>
 
-      userEmailText.textContent = "Logged in as: " + session.user.email;
-      dashboard.style.display = "block";
-    }
-
-    restoreSession();
-
-    // -----------------------------------------------------------
-    // LOGIN
-    // -----------------------------------------------------------
-    loginBtn.onclick = async () => {
-      const email = emailEl.value;
-      const password = passwordEl.value;
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      userEmailText.textContent = "Logged in as: " + data.user.email;
-      dashboard.style.display = "block";
-    };
-
-    // -----------------------------------------------------------
-    // SIGN UP
-    // -----------------------------------------------------------
-    signupBtn.onclick = async () => {
-      const email = emailEl.value;
-      const password = passwordEl.value;
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      alert("Signup successful. Check your email for confirmation.");
-    };
-
-    // -----------------------------------------------------------
-    // LOGOUT
-    // -----------------------------------------------------------
-    logoutBtn.onclick = async () => {
-      await supabase.auth.signOut();
-      dashboard.style.display = "none";
-      emailEl.value = "";
-      passwordEl.value = "";
-    };
-
-  </script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="app.js"></script>
 </body>
 </html>
