@@ -1,7 +1,7 @@
-// Initialize supabaseClientClient
-const supabaseClientClientUrl = "https://nppwibcowhfzvvxvtnzb.supabaseClientClient.co";
-const supabaseClientClientKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
-const supabaseClientClientClient = supabaseClientClient.createClient(supabaseClientClientUrl, supabaseClientClientKey);
+// Initialize supabaseClient
+const supabaseClientUrl = "https://nppwibcowhfzvvxvtnzb.supabaseClientClient.co";
+const supabaseClientKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
+const supabaseClient = supabaseClient.createClient(supabaseClientUrl, supabaseClientKey);
 
 
 
@@ -26,7 +26,7 @@ const wishlistContainer = document.getElementById("wishlist");
 signupBtn.onclick = async () => {
   console.log("Signup attempt:", signupEmail.value);
 
-  const { data, error } = await supabaseClientClient.auth.signUp({
+  const { data, error } = await supabaseClient.auth.signUp({
     email: signupEmail.value,
     password: signupPassword.value
   });
