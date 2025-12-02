@@ -1,7 +1,7 @@
-// Initialize Supabase
-const supabaseUrl = "https://nppwibcowhfzvvxvtnzb.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+// Initialize supabaseClientClient
+const supabaseClientClientUrl = "https://nppwibcowhfzvvxvtnzb.supabaseClientClient.co";
+const supabaseClientClientKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
+const supabaseClientClientClient = supabaseClientClient.createClient(supabaseClientClientUrl, supabaseClientClientKey);
 
 
 
@@ -26,7 +26,7 @@ const wishlistContainer = document.getElementById("wishlist");
 signupBtn.onclick = async () => {
   console.log("Signup attempt:", signupEmail.value);
 
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabaseClientClient.auth.signUp({
     email: signupEmail.value,
     password: signupPassword.value
   });
@@ -49,7 +49,7 @@ signupBtn.onclick = async () => {
 loginBtn.onclick = async () => {
   console.log("Login attempt:", loginEmail.value);
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabaseClientClient.auth.signInWithPassword({
     email: loginEmail.value,
     password: loginPassword.value
   });
@@ -79,14 +79,14 @@ addItemBtn.onclick = async () => {
 
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabaseClientClient.auth.getUser();
 
   if (!user) {
     alert("You must be logged in.");
     return;
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseClientClient
     .from("wishlist_items")
     .insert({
       title: title,
@@ -111,7 +111,7 @@ addItemBtn.onclick = async () => {
 // DELETE ITEM
 // -----------------------
 async function deleteItem(id) {
-  const { error } = await supabase
+  const { error } = await supabaseClientClient
     .from("wishlist_items")
     .delete()
     .eq("id", id);
@@ -132,14 +132,14 @@ async function deleteItem(id) {
 async function loadWishlist() {
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabaseClientClient.auth.getUser();
 
   if (!user) {
     wishlistContainer.innerHTML = "<p>Please log in.</p>";
     return;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClientClient
     .from("wishlist_items")
     .select("*")
     .eq("user_id", user.id)
