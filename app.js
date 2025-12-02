@@ -1,7 +1,7 @@
 // Initialize Supabase
 const supabaseUrl = "https://nppwibcowhfzvvxvtnzb.supabase.co";
 const supabaseKey = "YOUR_PUBLIC_ANON_KEY";
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 // UI elements
 const signupEmail = document.getElementById("signupEmail");
