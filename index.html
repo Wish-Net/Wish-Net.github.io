@@ -1,58 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>WishNet</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>WishNest</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="container">
-    <h1>WishNet</h1>
+    <div class="container">
 
-    <div id="auth-section" class="card">
-        <h2>Login or Create Account</h2>
+        <h1 class="app-title">WishNest</h1>
 
-        <div class="input-group">
-            <input type="email" id="email" placeholder=" ">
-            <label for="email">Email</label>
+        <!-- Auth Section -->
+        <div id="auth-section" class="card fade">
+            <h2>Welcome</h2>
+            <p class="subtitle">Log in or create your account</p>
+
+            <input type="email" id="email" placeholder="Email" class="input">
+            <input type="password" id="password" placeholder="Password" class="input">
+
+            <button id="signupBtn" class="btn primary">Sign Up</button>
+            <button id="loginBtn" class="btn secondary">Login</button>
+
+            <p id="authMessage" class="message"></p>
         </div>
-        <div class="input-group">
-            <input type="password" id="password" placeholder=" ">
-            <label for="password">Password</label>
+
+        <!-- App -->
+        <div id="app-section" class="hidden fade">
+
+            <div class="bar">
+                <h2>Your Wishlist</h2>
+                <button id="logoutBtn" class="btn danger small">Logout</button>
+            </div>
+
+            <div class="card">
+                <input type="text" id="itemName" placeholder="Item name" class="input">
+                <input type="text" id="itemUrl" placeholder="Item URL (optional)" class="input">
+                <input type="text" id="itemNotes" placeholder="Notes" class="input">
+                <button id="addItemBtn" class="btn primary">Add Item</button>
+            </div>
+
+            <ul id="wishlist" class="wishlist"></ul>
         </div>
 
-        <button id="signupBtn" class="primary-btn">Sign Up</button>
-        <button id="loginBtn" class="primary-btn">Login</button>
-
-        <p id="authMessage" class="message"></p>
     </div>
 
-    <div id="app-section" class="hidden">
-        <div class="header">
-            <h2>Your Wishlist</h2>
-            <button id="logoutBtn" class="secondary-btn">Logout</button>
-        </div>
-
-        <div class="input-group">
-            <input type="text" id="itemName" placeholder=" ">
-            <label for="itemName">Item Name</label>
-        </div>
-        <div class="input-group">
-            <input type="text" id="itemUrl" placeholder=" ">
-            <label for="itemUrl">Item URL (optional)</label>
-        </div>
-        <div class="input-group">
-            <input type="text" id="itemNotes" placeholder=" ">
-            <label for="itemNotes">Notes</label>
-        </div>
-
-        <button id="addItemBtn" class="primary-btn">Add Item</button>
-        <ul id="wishlist" class="wishlist-list"></ul>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
