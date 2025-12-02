@@ -1,41 +1,158 @@
-/* Body & container */
-body { font-family: 'Roboto', Arial, sans-serif; background: #f5f5f7; margin:0; padding:0; }
-.container { max-width:480px; margin:60px auto; padding:30px; }
+/* --- Global --- */
+body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: #f7f9fc;
+  color: #1a1a1a;
+}
 
-/* Typography */
-h1 { text-align:center; font-weight:700; color:#333; }
-h2 { margin-bottom:16px; font-weight:600; color:#444; }
+.container {
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 20px;
+}
 
-/* Card */
-.card { background:#fff; padding:24px; border-radius:16px; box-shadow:0 6px 16px rgba(0,0,0,0.08); margin-bottom:24px; }
+/* Title */
+.app-title {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
 
-/* Input groups */
-.input-group { position:relative; margin:16px 0; }
-.input-group input { width:100%; padding:14px 12px; border-radius:12px; border:1px solid #ccc; font-size:16px; outline:none; transition:0.2s; }
-.input-group input:focus { border-color:#4e73df; }
-.input-group label { position:absolute; left:14px; top:50%; transform:translateY(-50%); background:white; padding:0 6px; color:#aaa; font-size:14px; pointer-events:none; transition:0.2s all; }
-.input-group input:focus + label,
-.input-group input:not(:placeholder-shown) + label { top:-10px; font-size:12px; color:#4e73df; }
+/* --- Card / Layout --- */
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
 
-/* Buttons */
-button { font-size:16px; cursor:pointer; border:none; border-radius:12px; padding:12px; transition:0.2s; }
-.primary-btn { width:100%; background-color:#4e73df; color:white; margin:12px 0; box-shadow:0 4px 8px rgba(78,115,223,0.2); }
-.primary-btn:hover { background-color:#3c5dc0; box-shadow:0 6px 12px rgba(78,115,223,0.3); }
-.secondary-btn { background-color:#f44336; color:white; padding:10px 16px; border-radius:12px; font-size:14px; }
-.secondary-btn:hover { background-color:#d32f2f; }
+.fade {
+  animation: fadeIn 0.5s ease;
+}
 
-/* Wishlist */
-.wishlist-list { list-style:none; padding:0; margin:16px 0 0 0; }
-.wishlist-list li { background:#fff; padding:16px; margin-bottom:12px; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
-.wishlist-list li:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,0.1); }
-.wishlist-list a { color:#4e73df; text-decoration:none; }
-.wishlist-list a:hover { text-decoration:underline; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* Header */
-.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.subtitle {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  color: #6c757d;
+  font-size: 14px;
+}
 
-/* Messages */
-.message { color:#f44336; font-size:14px; margin-top:8px; }
+/* --- Inputs --- */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border: 1px solid #d3d7df;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: 0.2s;
+  background: #fdfdfd;
+}
 
-/* Hidden */
-.hidden { display:none; }
+.input:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 3px rgba(78,115,223,0.2);
+  outline: none;
+}
+
+/* --- Buttons --- */
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary {
+  background: #4e73df;
+  color: white;
+}
+
+.primary:hover {
+  background: #3c5dc0;
+}
+
+.secondary {
+  background: #e8ecf7;
+  color: #2c3e50;
+}
+
+.secondary:hover {
+  background: #dce2f3;
+}
+
+.danger {
+  background: #e74c3c;
+  color: white;
+}
+
+.danger:hover {
+  background: #c0392b;
+}
+
+.small {
+  width: auto;
+  padding: 10px 14px;
+}
+
+/* --- Top Bar --- */
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* --- Wishlist --- */
+.wishlist {
+  list-style: none;
+  padding: 0;
+}
+
+.wishlist li {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-info {
+  max-width: 75%;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #e74c3c;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.message {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #2c3e50;
+}
+
+/* --- Hidden --- */
+.hidden {
+  display: none;
+}
