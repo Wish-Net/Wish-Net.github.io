@@ -1,175 +1,108 @@
-// Initialize Supabase
+// ---- Supabase connection ----
 const supabaseUrl = "https://nppwibcowhfzvvxvtnzb.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcHdpYmN3b2hmenZ4eHZ0bnpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NzE2NzYsImV4cCI6MjA4MDA0NzY3Nn0.3oO2qOE5WPwUWZ1Y5UxESo-1HI_JL_DYLebueXwesnc";
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-// UI elements
-const signupEmail = document.getElementById("signupEmail");
-const signupPassword = document.getElementById("signupPassword");
+
+// DOM elements
+const authSection = document.getElementById("auth-section");
+const appSection = document.getElementById("app-section");
+
 const signupBtn = document.getElementById("signupBtn");
+const loginBtn  = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
-const loginEmail = document.getElementById("loginEmail");
-const loginPassword = document.getElementById("loginPassword");
-const loginBtn = document.getElementById("loginBtn");
+const authMessage = document.getElementById("authMessage");
 
-const addTitle = document.getElementById("itemTitle");
-const addUrl = document.getElementById("itemUrl");
 const addItemBtn = document.getElementById("addItemBtn");
-const wishlistContainer = document.getElementById("wishlist");
+const wishlistEl = document.getElementById("wishlist");
 
-
-// -----------------------
-// SIGNUP
-// -----------------------
+// ---- Signup ----
 signupBtn.onclick = async () => {
-  console.log("Signup attempt:", signupEmail.value);
-
-  const { data, error } = await supabase.auth.signUp({
-    email: signupEmail.value,
-    password: signupPassword.value
+  let { error } = await supabaseClient.auth.signUp({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value
   });
 
-  if (error) {
-    console.error("Signup error:", error);
-    alert("Signup failed: " + error.message);
-    return;
-  }
-
-  console.log("Signup success:", data);
-
-  alert("Account created. Please verify your email before logging in.");
+  authMessage.textContent = error
+    ? error.message
+    : "Signup successful! Please verify your email before logging in.";
 };
 
-
-// -----------------------
-// LOGIN
-// -----------------------
+// ---- Login ----
 loginBtn.onclick = async () => {
-  console.log("Login attempt:", loginEmail.value);
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: loginEmail.value,
-    password: loginPassword.value
+  let { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value
   });
 
-  if (error) {
-    console.error("Login error:", error);
-    alert("Login failed: " + error.message);
-    return;
-  }
+  if (error) return authMessage.textContent = error.message;
 
-  console.log("Login successful:", data);
-  loadWishlist();
-};
-
-
-// -----------------------
-// ADD ITEM
-// -----------------------
-addItemBtn.onclick = async () => {
-  const title = addTitle.value.trim();
-  const url = addUrl.value.trim();
-
-  if (!title || !url) {
-    alert("Please fill out all fields.");
-    return;
-  }
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    alert("You must be logged in.");
-    return;
-  }
-
-  const { error } = await supabase
-    .from("wishlist_items")
-    .insert({
-      title: title,
-      url: url,
-      user_id: user.id
-    });
-
-  if (error) {
-    console.error("Error inserting item:", error);
-    alert("Could not add item.");
-    return;
-  }
-
-  addTitle.value = "";
-  addUrl.value = "";
+  authSection.classList.add("hidden");
+  appSection.classList.remove("hidden");
 
   loadWishlist();
 };
 
+// ---- Logout ----
+logoutBtn.onclick = async () => {
+  await supabaseClient.auth.signOut();
+  appSection.classList.add("hidden");
+  authSection.classList.remove("hidden");
+};
 
-// -----------------------
-// DELETE ITEM
-// -----------------------
-async function deleteItem(id) {
-  const { error } = await supabase
-    .from("wishlist_items")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Delete error:", error);
-    alert("Failed to delete item.");
-    return;
-  }
-
-  loadWishlist();
-}
-
-
-// -----------------------
-// LOAD WISHLIST
-// -----------------------
+// ---- Load wishlist ----
 async function loadWishlist() {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
+  wishlistEl.innerHTML = "";
 
-  if (!user) {
-    wishlistContainer.innerHTML = "<p>Please log in.</p>";
-    return;
-  }
+  let { data: user } = await supabaseClient.auth.getUser();
+  if (!user.user) return;
 
-  const { data, error } = await supabase
+  let { data: items } = await supabaseClient
     .from("wishlist_items")
     .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .eq("user_id", user.user.id);
 
-  if (error) {
-    console.error("Load wishlist error:", error);
-    return;
-  }
+  items.forEach(item => {
+    let li = document.createElement("li");
+    li.className = "list-item";
+    li.innerHTML = `
+      <div class="item-title">${item.name}</div>
+      <a class="item-url" href="${item.url}" target="_blank">${item.url || ""}</a>
+      <div class="item-notes">${item.notes || ""}</div>
 
-  if (data.length === 0) {
-    wishlistContainer.innerHTML = "<p>No items yet.</p>";
-    return;
-  }
-
-  wishlistContainer.innerHTML = data
-    .map(
-      (item) => `
-      <div class="item">
-        <p><strong>${item.title}</strong></p>
-        <a href="${item.url}" target="_blank">${item.url}</a><br>
-        <button class="deleteBtn" data-id="${item.id}">
-          Delete
-        </button>
-      </div>
-    `
-    )
-    .join("");
-
-  document.querySelectorAll(".deleteBtn").forEach((btn) => {
-    btn.onclick = () => {
-      const id = btn.getAttribute("data-id");
-      deleteItem(id);
-    };
+      <button class="delete-btn" onclick="deleteItem('${item.id}')">Delete</button>
+    `;
+    wishlistEl.appendChild(li);
   });
 }
+
+// ---- Delete item ----
+async function deleteItem(id) {
+  await supabaseClient.from("wishlist_items").delete().eq("id", id);
+  loadWishlist();
+}
+
+// ---- Add item ----
+addItemBtn.onclick = async () => {
+  let { data: user } = await supabaseClient.auth.getUser();
+  if (!user.user) return;
+
+  let name = document.getElementById("itemName").value;
+  let url = document.getElementById("itemUrl").value;
+  let notes = document.getElementById("itemNotes").value;
+
+  if (!name.trim()) return;
+
+  await supabaseClient.from("wishlist_items").insert({
+    user_id: user.user.id,
+    name,
+    url,
+    notes
+  });
+
+  document.getElementById("itemName").value = "";
+  document.getElementById("itemUrl").value = "";
+  document.getElementById("itemNotes").value = "";
+
+  loadWishlist();
+};
