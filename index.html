@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>WishNest</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WishNet 🎄</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="container">
-    <h1>WishNest</h1>
+<header class="header">
+  <h1>🎄 WishNet</h1>
+  <p>Christmas & Birthday Wishlists</p>
+</header>
 
-    <div id="auth-section" class="card">
-        <h2>Login or Create Account</h2>
+<main class="container">
 
-        <div class="input-group">
-            <input type="email" id="email" placeholder=" ">
-            <label for="email">Email</label>
-        </div>
-        <div class="input-group">
-            <input type="password" id="password" placeholder=" ">
-            <label for="password">Password</label>
-        </div>
+  <!-- AUTH -->
+  <section id="auth" class="card">
+    <h2>Welcome</h2>
 
-        <button id="signupBtn" class="primary-btn">Sign Up</button>
-        <button id="loginBtn" class="primary-btn">Login</button>
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
 
-        <p id="authMessage" class="message"></p>
+    <button id="signupBtn">Sign up</button>
+    <button id="loginBtn" class="secondary">Log in</button>
+
+    <p id="authMsg" class="msg"></p>
+  </section>
+
+  <!-- APP -->
+  <section id="app" class="card hidden">
+    <div class="top-bar">
+      <h2>Your Wishlist</h2>
+      <button id="logoutBtn" class="danger">Logout</button>
     </div>
 
-    <div id="app-section" class="hidden">
-        <div class="header">
-            <h2>Your Wishlist</h2>
-            <button id="logoutBtn" class="secondary-btn">Logout</button>
-        </div>
-
-        <div class="input-group">
-            <input type="text" id="itemName" placeholder=" ">
-            <label for="itemName">Item Name</label>
-        </div>
-        <div class="input-group">
-            <input type="text" id="itemUrl" placeholder=" ">
-            <label for="itemUrl">Item URL (optional)</label>
-        </div>
-        <div class="input-group">
-            <input type="text" id="itemNotes" placeholder=" ">
-            <label for="itemNotes">Notes</label>
-        </div>
-
-        <button id="addItemBtn" class="primary-btn">Add Item</button>
-        <ul id="wishlist" class="wishlist-list"></ul>
+    <div class="add">
+      <input id="itemName" placeholder="Item name" />
+      <input id="itemUrl" placeholder="Link (optional)" />
+      <button id="addBtn">Add</button>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <ul id="list"></ul>
+  </section>
+
+</main>
+
+<footer>
+  Made with ❤️ for the holidays
+</footer>
+
+<!-- Supabase FIRST -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
